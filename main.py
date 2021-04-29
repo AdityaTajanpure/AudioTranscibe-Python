@@ -4,7 +4,7 @@ import time
 
 st.header("Trascribe Audio")
 
-fileObject = st.file_uploader(label = "Please upload your file" )
+fileObject = st.file_uploader(label="Please upload your file")
 if fileObject:
     token, t_id = upload_file(fileObject)
     result = {}
@@ -16,19 +16,20 @@ if fileObject:
     while result.get("status") != "processing":
         percent_complete += sleep_duration
         time.sleep(sleep_duration)
-        progress_bar.progress(percent_complete/10)
-        result = get_text(token,t_id)
+        progress_bar.progress(percent_complete / 10)
+        result = get_text(token, t_id)
 
     sleep_duration = 0.01
 
-    for percent in range(percent_complete,101):
+    for percent in range(percent_complete, 101):
         time.sleep(sleep_duration)
         progress_bar.progress(percent)
 
     with st.spinner("Processing....."):
         while result.get("status") != 'completed':
-            result = get_text(token,t_id)
+            result = get_text(token, t_id)
 
     st.balloons()
     st.header("Transcribed Text")
     st.subheader(result['text'])
+    print(result['text'])
